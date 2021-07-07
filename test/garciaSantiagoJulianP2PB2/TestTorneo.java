@@ -28,11 +28,16 @@ public class TestTorneo {
         torneoDeFutbol.registrarMiembro(jugadorArgentina);
         torneoDeFutbol.registrarMiembro(jugadorChile);
         torneoDeFutbol.registrarPartido("Argentina", "Chile");
+        Partido partidoRegistrado = torneoDeFutbol.getPartido("ArgentinaChile");
         assertEquals("debe registrar un partido", 1, torneoDeFutbol.getPartidos().size());
+        assertNotNull("debe existir el partido", partidoRegistrado);
+        assertEquals("Argentina debe ser local", "Argentina", partidoRegistrado.getEquipoLocal());
+        assertEquals("Chile debe ser visitante", "Chile", partidoRegistrado.getEquipoVisitante());
     }
 
     @Test
     public void debeRegistrarUnGol() {
+        boolean exceptionThrown = false;
         Jugador jugadorArgentina = new Jugador(15500600, "Carlos", "Tevez", "Argentina", 32, Posicion.MED);
         Jugador jugadorChile = new Jugador(25400600, "Roberto", "Garay", "Chile", 25, Posicion.MED);
         torneoDeFutbol.registrarMiembro(jugadorArgentina);
@@ -40,9 +45,12 @@ public class TestTorneo {
         torneoDeFutbol.registrarPartido("Argentina", "Chile");
         try {
             torneoDeFutbol.registrarGol("ArgentinaChile", "Carlos Tevez", 15, "Argentina");
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            exceptionThrown = true;
+        }
         Partido partido = torneoDeFutbol.getPartido("ArgentinaChile");
         assertEquals("debe registrar un gol", 1, partido.getGoles().size());
+        assertFalse("no debe tirar error", exceptionThrown);
     }
 
     @Test
@@ -70,6 +78,7 @@ public class TestTorneo {
 
     @Test
     public void debeGanarEquipoLocal() {
+        boolean exceptionThrown = false;
         Jugador jugadorArgentina = new Jugador(15500600, "Carlos", "Tevez", "Argentina", 32, Posicion.MED);
         Jugador jugadorChile = new Jugador(25400600, "Roberto", "Garay", "Chile", 25, Posicion.MED);
         torneoDeFutbol.registrarMiembro(jugadorArgentina);
@@ -79,14 +88,18 @@ public class TestTorneo {
             torneoDeFutbol.registrarGol("ArgentinaChile", "Carlos Tevez", 15, "Argentina");
             torneoDeFutbol.registrarGol("ArgentinaChile", "Roberto Garay", 35, "Chile");
             torneoDeFutbol.registrarGol("ArgentinaChile", "Carlos Tevez", 50, "Argentina");
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            exceptionThrown = true;
+        }
         Partido partido = torneoDeFutbol.getPartido("ArgentinaChile");
         assertEquals("debe haber 3 goles", 3, partido.getGoles().size());
         assertEquals("debe ganar Argentina como local", "Argentina(Local)", partido.getGanador());
+        assertFalse("no debe tirar error", exceptionThrown);
     }
 
     @Test
     public void debenEmpatar() {
+        boolean exceptionThrown = false;
         Jugador jugadorArgentina = new Jugador(15500600, "Carlos", "Tevez", "Argentina", 32, Posicion.MED);
         Jugador jugadorChile = new Jugador(25400600, "Roberto", "Garay", "Chile", 25, Posicion.MED);
         torneoDeFutbol.registrarMiembro(jugadorArgentina);
@@ -95,9 +108,12 @@ public class TestTorneo {
         try {
             torneoDeFutbol.registrarGol("ArgentinaChile", "Carlos Tevez", 15, "Argentina");
             torneoDeFutbol.registrarGol("ArgentinaChile", "Roberto Garay", 35, "Chile");
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            exceptionThrown = true;
+        }
         Partido partido = torneoDeFutbol.getPartido("ArgentinaChile");
         assertEquals("debe haber 2 goles", 2, partido.getGoles().size());
         assertEquals("deben empatar los equipos", "Empate", partido.getGanador());
+        assertFalse("no debe tirar error", exceptionThrown);
     }
 }

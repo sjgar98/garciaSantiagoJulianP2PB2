@@ -8,7 +8,7 @@ public class Partido {
     private final String equipoLocal;
     private final String equipoVisitante;
     private final HashSet<Miembro> jugadores;
-    private final ArrayList<Gol> goles = new ArrayList();
+    private final ArrayList<Gol> goles = new ArrayList<>();
 
     public Partido(HashSet<Miembro> jugadores, String equipoLocal, String equipoVisitante) {
         this.jugadores = jugadores;

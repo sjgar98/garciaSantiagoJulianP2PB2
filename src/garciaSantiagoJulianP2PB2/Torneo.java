@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class Torneo {
-    private final HashSet<Miembro> miembros = new HashSet();
-    private final HashMap<String, Partido> partidos = new HashMap();
+    private final HashSet<Miembro> miembros = new HashSet<>();
+    private final HashMap<String, Partido> partidos = new HashMap<>();
 
     public HashSet<Miembro> getMiembros() {
         return miembros;
@@ -33,13 +33,8 @@ public class Torneo {
     public void registrarGol(String codigoPartido, String nombreJugador, int minuto, String equipo) throws JugadorNoEncontradoException, PartidoNoEncontradoException {
         if (this.partidos.containsKey(codigoPartido)) {
             Partido partido = this.partidos.get(codigoPartido);
-            try {
-                partido.sumarGol(nombreJugador, minuto, equipo);
-            } catch (JugadorNoEncontradoException e) {
-                throw e;
-            }
+            partido.sumarGol(nombreJugador, minuto, equipo);
         } else {
-            System.out.println("Test");
             throw new PartidoNoEncontradoException("Partido no encontrado en el torneo");
         }
     }
