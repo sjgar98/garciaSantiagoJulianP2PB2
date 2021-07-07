@@ -3,6 +3,8 @@ package garciaSantiagoJulianP2PB2;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class TestTorneo {
@@ -86,8 +88,8 @@ public class TestTorneo {
         torneoDeFutbol.registrarPartido("Argentina", "Chile");
         try {
             torneoDeFutbol.registrarGol("ArgentinaChile", "Carlos Tevez", 15, "Argentina");
-            torneoDeFutbol.registrarGol("ArgentinaChile", "Roberto Garay", 35, "Chile");
             torneoDeFutbol.registrarGol("ArgentinaChile", "Carlos Tevez", 50, "Argentina");
+            torneoDeFutbol.registrarGol("ArgentinaChile", "Roberto Garay", 35, "Chile");
         } catch(Exception e) {
             exceptionThrown = true;
         }
@@ -114,6 +116,27 @@ public class TestTorneo {
         Partido partido = torneoDeFutbol.getPartido("ArgentinaChile");
         assertEquals("debe haber 2 goles", 2, partido.getGoles().size());
         assertEquals("deben empatar los equipos", "Empate", partido.getGanador());
+        assertFalse("no debe tirar error", exceptionThrown);
+    }
+
+    @Test
+    public void debeDevolverGolesOrdenados() {
+        boolean exceptionThrown = false;
+        Jugador jugadorArgentina = new Jugador(15500600, "Carlos", "Tevez", "Argentina", 32, Posicion.MED);
+        Jugador jugadorChile = new Jugador(25400600, "Roberto", "Garay", "Chile", 25, Posicion.MED);
+        ArrayList<Gol> listaDeGoles = new ArrayList<>();
+        torneoDeFutbol.registrarMiembro(jugadorArgentina);
+        torneoDeFutbol.registrarMiembro(jugadorChile);
+        torneoDeFutbol.registrarPartido("Argentina", "Chile");
+        try {
+            torneoDeFutbol.registrarGol("ArgentinaChile", "Carlos Tevez", 15, "Argentina");
+            torneoDeFutbol.registrarGol("ArgentinaChile", "Carlos Tevez", 50, "Argentina");
+            torneoDeFutbol.registrarGol("ArgentinaChile", "Roberto Garay", 35, "Chile");
+            listaDeGoles = torneoDeFutbol.getListaDeGoles("ArgentinaChile");
+        } catch(Exception e) {
+            exceptionThrown = true;
+        }
+        assertEquals("debe retornar ordenado", "[Jugador Carlos Tevez 15min, Jugador Roberto Garay 35min, Jugador Carlos Tevez 50min]", listaDeGoles.toString());
         assertFalse("no debe tirar error", exceptionThrown);
     }
 }

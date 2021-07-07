@@ -1,5 +1,7 @@
 package garciaSantiagoJulianP2PB2;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -39,4 +41,23 @@ public class Torneo {
         }
     }
 
+    public String getGanadorPartido(String codigoPartido) throws PartidoNoEncontradoException {
+        if (this.partidos.containsKey(codigoPartido)) {
+            return this.partidos.get(codigoPartido).getGanador();
+        } else {
+            throw new PartidoNoEncontradoException("Partido no encontrado en el torneo");
+        }
+    }
+
+    public ArrayList<Gol> getListaDeGoles(String codigoPartido) throws PartidoNoEncontradoException {
+        if (this.partidos.containsKey(codigoPartido)) {
+            Partido partido = this.partidos.get(codigoPartido);
+            ArrayList<Gol> golesOrdenados = new ArrayList<>(partido.getGoles());
+            Collections.sort(golesOrdenados, new MinutoGolComparator());
+            System.out.println(golesOrdenados);
+            return golesOrdenados;
+        } else {
+            throw new PartidoNoEncontradoException("Partido no encontrado en el torneo");
+        }
+    }
 }
